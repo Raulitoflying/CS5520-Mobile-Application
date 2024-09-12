@@ -33,6 +33,7 @@ const Input = ({ autoFocus }) => {
         ref={textInputRef}
         style={styles.input}
         placeholder="Type here..."
+        keyboardType="default"
         value={inputText}
         onChangeText={setInputText}
         onFocus={handleFocus}
