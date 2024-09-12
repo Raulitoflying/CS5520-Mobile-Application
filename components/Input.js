@@ -9,7 +9,6 @@ const Input = () => {
       <TextInput
         // multiline
         style={styles.input}
-        // 
         placeholder="Type here..."
         value={inputText}
         onChangeText={setInputText}
