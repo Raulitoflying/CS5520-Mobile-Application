@@ -14,6 +14,10 @@ const Input = () => {
         value={inputText}
         onChangeText={setInputText}
       />
+      <Text>You typed: {inputText}</Text>
+      <StatusBar style="auto" />
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
