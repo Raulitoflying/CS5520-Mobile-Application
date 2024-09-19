@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Transparent background for the modal
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   innerContainer: {
     backgroundColor: '#fff',
