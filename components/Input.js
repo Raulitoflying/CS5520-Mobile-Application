@@ -35,29 +35,31 @@ const Input = ({ autoFocus, onConfirm, visible }) => {
       visible={visible}
     >
       <View style={styles.container}>
-        <TextInput
-          ref={textInputRef}
-          style={styles.input}
-          placeholder="Type here..."
-          value={inputText}
-          onChangeText={setInputText}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-        />
-        {isFocused && inputText.length > 0 && (
-          <Text style={styles.text}>Character count: {inputText.length}</Text>
-        )}
-        {showMessage && (
-          <Text style={styles.text}>
-            {inputText.length >= 3
-              ? 'Thank you'
-              : 'Please type more than 3 characters'}
-          </Text>
-        )}
-        <View style={styles.buttonContainer}>
-          <Button title="Confirm" onPress={handleConfirm} />
+        <View style={styles.innerContainer}>
+          <TextInput
+            ref={textInputRef}
+            style={styles.input}
+            placeholder="Type here..."
+            value={inputText}
+            onChangeText={setInputText}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+          />
+          {isFocused && inputText.length > 0 && (
+            <Text style={styles.text}>Character count: {inputText.length}</Text>
+          )}
+          {showMessage && (
+            <Text style={styles.text}>
+              {inputText.length >= 3
+                ? 'Thank you'
+                : 'Please type more than 3 characters'}
+            </Text>
+          )}
+          <View style={styles.buttonContainer}>
+            <Button title="Confirm" onPress={handleConfirm} />
+          </View>
+          <StatusBar style="auto" />
         </View>
-        <StatusBar style="auto" />
       </View>
     </Modal>
   );
@@ -69,13 +71,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  innerContainer: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '80%',
+  },
   input: {
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
     paddingHorizontal: 10,
     marginVertical: 20,
-    width: '80%',
+    width: '100%',
   },
   text: {
     fontSize: 16,
