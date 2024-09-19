@@ -31,7 +31,7 @@ const Input = ({ autoFocus, onConfirm, visible }) => {
   return (
     <Modal
       animationType="slide"
-      transparent={false}
+      transparent={true}
       visible={visible}
     >
       <View style={styles.container}>
@@ -66,7 +66,6 @@ const Input = ({ autoFocus, onConfirm, visible }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
