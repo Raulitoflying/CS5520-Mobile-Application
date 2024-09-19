@@ -34,7 +34,7 @@ const Input = ({ autoFocus, onConfirm, visible }) => {
       transparent={true}
       visible={visible}
     >
-      <View style={styles.container}>
+      <View style={styles.modalContainer}>
         <View style={styles.innerContainer}>
           <TextInput
             ref={textInputRef}
@@ -66,10 +66,11 @@ const Input = ({ autoFocus, onConfirm, visible }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
+  modalContainer: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Transparent background for the modal
   },
   innerContainer: {
     backgroundColor: '#fff',
