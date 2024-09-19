@@ -26,6 +26,7 @@ const Input = ({ autoFocus, onConfirm, visible, onCancel }) => {
   const handleConfirm = () => {
     console.log(inputText);
     onConfirm(inputText);
+    setInputText(''); // Clear the input
   };
 
   const handleCancel = () => {
@@ -39,7 +40,10 @@ const Input = ({ autoFocus, onConfirm, visible, onCancel }) => {
         },
         {
           text: "Yes",
-          onPress: onCancel
+          onPress: () => {
+            setInputText(''); // Clear the input
+            onCancel();
+          }
         }
       ]
     );
@@ -72,11 +76,13 @@ const Input = ({ autoFocus, onConfirm, visible, onCancel }) => {
                 : 'Please type more than 3 characters'}
             </Text>
           )}
-          <View style={styles.buttonContainer}>
-            <Button title="Confirm" onPress={handleConfirm} />
-          </View>
-          <View style={styles.buttonContainer}>
-            <Button title="Cancel" onPress={handleCancel} />
+          <View style={styles.buttonRow}>
+            <View style={styles.buttonContainer}>
+              <Button title="Confirm" onPress={handleConfirm} />
+            </View>
+            <View style={styles.buttonContainer}>
+              <Button title="Cancel" onPress={handleCancel} />
+            </View>
           </View>
           <StatusBar style="auto" />
         </View>
@@ -111,6 +117,11 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     marginVertical: 10,
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
   },
   buttonContainer: {
     width: '30%',
