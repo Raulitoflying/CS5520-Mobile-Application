@@ -54,7 +54,9 @@ const Input = ({ autoFocus, onConfirm, visible }) => {
               : 'Please type more than 3 characters'}
           </Text>
         )}
-        <Button title="Confirm" onPress={handleConfirm} />
+        <View style={styles.buttonContainer}>
+          <Button title="Confirm" onPress={handleConfirm} />
+        </View>
         <StatusBar style="auto" />
       </View>
     </Modal>
@@ -78,6 +80,10 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 16,
+    marginVertical: 10,
+  },
+  buttonContainer: {
+    width: '30%',
     marginVertical: 10,
   },
 });
