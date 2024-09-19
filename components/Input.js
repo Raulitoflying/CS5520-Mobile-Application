@@ -90,12 +90,13 @@ const Input = ({ autoFocus, onConfirm, visible, onCancel }) => {
             <Image
               style={styles.image}
               source={{ uri: 'https://cdn-icons-png.flaticon.com/512/2617/2617812.png' }}
-              alt="Network Image"
+              alt="Network Image" // The alt attribute provides alternative text for an image. If the image fails to load, the alternative text is displayed in its place.
             />
             <Image
               style={styles.image}
               source={require('../assets/local-image.png')}
               alt="Local Image"
+              // The alt attribute provides alternative text for an image. If the image fails to load, the alternative text is displayed in its place.
             />
           </View>
           <StatusBar style="auto" />
