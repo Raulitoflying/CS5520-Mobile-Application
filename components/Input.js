@@ -1,72 +1,100 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, TextInput, View, Text, StatusBar } from 'react-native';
+import { StyleSheet, TextInput, View, Text, Button, StatusBar, Modal } from 'react-native';
 
-const Input = ({ autoFocus }) => {
+const Input = ({ autoFocus, onConfirm, visible }) => {
   const [inputText, setInputText] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const textInputRef = useRef(null);
 
-
-  // Focus the TextInput when the component renders if autoFocus is true
   useEffect(() => {
     if (autoFocus && textInputRef.current) {
       textInputRef.current.focus();
     }
   }, [autoFocus]);
 
-  // Handle when the TextInput loses focus
   const handleBlur = () => {
     setIsFocused(false);
     setShowMessage(true);
   };
 
-  // Handle when the TextInput gains focus
   const handleFocus = () => {
     setIsFocused(true);
     setShowMessage(false);
   };
 
-  return (
-    <View>
-      <TextInput
-        ref={textInputRef}
-        style={styles.input}
-        placeholder="Type here..."
-        keyboardType="default"
-        value={inputText}
-        onChangeText={setInputText}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-      />
+  const handleConfirm = () => {
+    console.log(inputText);
+    onConfirm(inputText);
+  };
 
-      {/* Show character count only when input is focused and user has typed something */}
-      {isFocused && inputText.length > 0 && (
-        <Text>Character count: {inputText.length}</Text>
-      )}
-      
-      {/* Show the message when input loses focus */}
-      {showMessage && (
-        <Text>
-          {inputText.length >= 3
-            ? 'Thank you'
-            : 'Please type more than 3 characters'}
-        </Text>
-      )}
-      <Text>You typed: {inputText}</Text>
-      <StatusBar style="auto" />
-    </View>
+  return (
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={visible}
+    >
+      <View style={styles.modalContainer}>
+        <View style={styles.innerContainer}>
+          <TextInput
+            ref={textInputRef}
+            style={styles.input}
+            placeholder="Type here..."
+            value={inputText}
+            onChangeText={setInputText}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
+          />
+          {isFocused && inputText.length > 0 && (
+            <Text style={styles.text}>Character count: {inputText.length}</Text>
+          )}
+          {showMessage && (
+            <Text style={styles.text}>
+              {inputText.length >= 3
+                ? 'Thank you'
+                : 'Please type more than 3 characters'}
+            </Text>
+          )}
+          <View style={styles.buttonContainer}>
+            <Button title="Confirm" onPress={handleConfirm} />
+          </View>
+          <StatusBar style="auto" />
+        </View>
+      </View>
+    </Modal>
   );
 };
 
 const styles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  innerContainer: {
+    backgroundColor: '#fff',
+    padding: 20,
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '80%',
+  },
   input: {
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
     paddingHorizontal: 10,
     marginVertical: 20,
-    width: '80%',
+    width: '100%',
+  },
+  text: {
+    fontSize: 16,
+    marginVertical: 10,
+  },
+  buttonContainer: {
+    width: '30%',
+    marginVertical: 10,
   },
 });
 
