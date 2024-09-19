@@ -7,6 +7,22 @@ const Input = ({ autoFocus }) => {
   const [showMessage, setShowMessage] = useState(false);
   const textInputRef = useRef(null);
 
+  useEffect(() => {
+    if (autoFocus && textInputRef.current) {
+      textInputRef.current.focus();
+    }
+  }, [autoFocus]);
+
+  const handleBlur = () => {
+    setIsFocused(false);
+    setShowMessage(true);
+  };
+
+  const handleFocus = () => {
+    setIsFocused(true);
+    setShowMessage(false);
+  };
+  
   return (
     <View>
       <TextInput
