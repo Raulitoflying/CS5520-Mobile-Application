@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { StyleSheet, TextInput, View, Text, StatusBar } from 'react-native'; 
+import React, { useState, useEffect, useRef } from 'react';
+import { StyleSheet, TextInput, View, Text, Button, StatusBar } from 'react-native';
 
 const Input = ({ autoFocus }) => {
   const [inputText, setInputText] = useState('');
@@ -48,12 +48,11 @@ const Input = ({ autoFocus }) => {
             : 'Please type more than 3 characters'}
         </Text>
       )}
-      <Button title="Confirm" onPress={() => {}} />
+      <Button title="Confirm" onPress={handleConfirm} />
       <StatusBar style="auto" />
     </View>
   );
 };
-  
 
 const styles = StyleSheet.create({
   input: {
