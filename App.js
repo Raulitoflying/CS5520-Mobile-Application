@@ -32,7 +32,10 @@ export default function App() {
 
       {/* Bottom section for user input with a background color */}
       <View style={styles.bottomSection}>
-        <Text style={styles.inputText}>You typed: {inputData}</Text>
+        {/* Wrapping the Text in a View to handle styling consistently */}
+        <View style={styles.inputTextContainer}>
+          <Text style={styles.inputText}>You typed: {inputData}</Text>
+        </View>
       </View>
 
       <StatusBar style="auto" />
@@ -63,13 +66,21 @@ const styles = StyleSheet.create({
     color: 'purple',
     textAlign: 'center',
   },
+  buttonContainer: {
+    width: '30%',
+    marginVertical: 10,
+  },
+  // The container around the Text, handling background color, padding, and borderRadius
+  inputTextContainer: {
+    backgroundColor: 'lightblue',  // Set the background color for the container
+    padding: 10,                   // Add padding to space out the content
+    borderRadius: 15,              // Apply borderRadius for rounded corners
+  },
+  // Text style inside the View container
   inputText: {
     fontSize: 18,
     color: 'gray',
     textAlign: 'center',
-  },
-  buttonContainer: {
-    width: '30%',
-    marginVertical: 10,
+    padding: 10,    
   },
 });
