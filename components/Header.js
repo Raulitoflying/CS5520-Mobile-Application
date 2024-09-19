@@ -11,10 +11,12 @@ const Header = ({ appName }) => {
 
 const styles = StyleSheet.create({
   header: {
-    padding: 20,
-    backgroundColor: '#f8f8f8',
-    alignItems: 'center',
-    justifyContent: 'center',
+    color: "purple", 
+    fontSize: 25, 
+    borderColor: "purple", 
+    borderWidth: 2, 
+    padding: 5, 
+    marginBottom: 10,
   },
 });
 
