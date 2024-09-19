@@ -16,13 +16,13 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text>Welcome to {appName}</Text>
+      <Text style={styles.title}>Welcome to {appName}</Text>
       <Header appName={appName} />
       <View style={styles.buttonContainer}>
         <Button title="Add a goal" onPress={() => setModalVisible(true)} />
       </View>
       <Input autoFocus={true} onConfirm={handleInputData} visible={modalVisible} />
-      <Text>You typed: {inputData}</Text>
+      <Text style={styles.inputText}>You typed: {inputData}</Text>
       <StatusBar style="auto" />
     </View>
   );
@@ -34,6 +34,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    color: 'purple',
+    textAlign: 'center',
+  },
+  inputText: {
+    fontSize: 18,
+    color: 'gray',
+    marginTop: 10,
   },
   buttonContainer: {
     width: '30%',
