@@ -45,10 +45,10 @@ const Input = ({ autoFocus, onConfirm, visible }) => {
           onBlur={handleBlur}
         />
         {isFocused && inputText.length > 0 && (
-          <Text>Character count: {inputText.length}</Text>
+          <Text style={styles.text}>Character count: {inputText.length}</Text>
         )}
         {showMessage && (
-          <Text>
+          <Text style={styles.text}>
             {inputText.length >= 3
               ? 'Thank you'
               : 'Please type more than 3 characters'}
@@ -75,6 +75,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginVertical: 20,
     width: '80%',
+  },
+  text: {
+    fontSize: 16,
+    marginVertical: 10,
   },
 });
 
