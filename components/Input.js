@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, TextInput, View, Text, Button, StatusBar } from 'react-native';
+import { StyleSheet, TextInput, View, Text, Button, StatusBar, Modal } from 'react-native';
 
-const Input = ({ autoFocus, onConfirm }) => {
+const Input = ({ autoFocus, onConfirm, visible }) => {
   const [inputText, setInputText] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
@@ -29,33 +29,45 @@ const Input = ({ autoFocus, onConfirm }) => {
   };
 
   return (
-    <View>
-      <TextInput
-        ref={textInputRef}
-        style={styles.input}
-        placeholder="Type here..."
-        value={inputText}
-        onChangeText={setInputText}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-      />
-      {isFocused && inputText.length > 0 && (
-        <Text>Character count: {inputText.length}</Text>
-      )}
-      {showMessage && (
-        <Text>
-          {inputText.length >= 3
-            ? 'Thank you'
-            : 'Please type more than 3 characters'}
-        </Text>
-      )}
-      <Button title="Confirm" onPress={handleConfirm} />
-      <StatusBar style="auto" />
-    </View>
+    <Modal
+      animationType="slide"
+      transparent={false}
+      visible={visible}
+    >
+      <View style={styles.container}>
+        <TextInput
+          ref={textInputRef}
+          style={styles.input}
+          placeholder="Type here..."
+          value={inputText}
+          onChangeText={setInputText}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+        />
+        {isFocused && inputText.length > 0 && (
+          <Text>Character count: {inputText.length}</Text>
+        )}
+        {showMessage && (
+          <Text>
+            {inputText.length >= 3
+              ? 'Thank you'
+              : 'Please type more than 3 characters'}
+          </Text>
+        )}
+        <Button title="Confirm" onPress={handleConfirm} />
+        <StatusBar style="auto" />
+      </View>
+    </Modal>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   input: {
     height: 40,
     borderColor: 'gray',
