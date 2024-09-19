@@ -6,12 +6,13 @@ import Input from './components/Input';
 
 export default function App() {
   const [inputData, setInputData] = useState('');
-  const [modalVisible, setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false); // Controls modal visibility
   const appName = "CS5520-Mobile-Application";
 
+  // Function to handle when input data is confirmed
   const handleInputData = (data) => {
     setInputData(data);
-    setModalVisible(false); // Close the modal
+    setModalVisible(false); // Close the modal after confirming the input
   };
 
   const handleCancel = () => {
@@ -20,17 +21,27 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* Header and Button will take 1/5th of the space */}
       <View style={styles.topSection}>
-        <Text style={styles.welcomeText}>Welcome to {appName}</Text>
+        <Text style={styles.title}>Welcome to {appName}</Text>
         <Header appName={appName} />
         <View style={styles.buttonContainer}>
+          {/* Button to open modal */}
           <Button title="Add a goal" onPress={() => setModalVisible(true)} />
         </View>
       </View>
+
+      {/* Input Modal */}
       <Input autoFocus={true} onConfirm={handleInputData} visible={modalVisible} onCancel={handleCancel} />
+
+      {/* Bottom section for user input with a background color */}
       <View style={styles.bottomSection}>
-        <Text style={styles.inputText}>You typed: {inputData}</Text>
+        {/* Wrapping the Text in a View to handle styling consistently */}
+        <View style={styles.inputTextContainer}>
+          <Text style={styles.inputText}>You typed: {inputData}</Text>
+        </View>
       </View>
+
       <StatusBar style="auto" />
     </SafeAreaView>
   );
@@ -79,4 +90,3 @@ const styles = StyleSheet.create({
     padding: 10,    
   },
 });
-
