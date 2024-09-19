@@ -6,6 +6,7 @@ const Input = ({ autoFocus, onConfirm, visible, onCancel }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const textInputRef = useRef(null);
+  const MIN_CHAR_COUNT = 3; // Minimum required characters
 
   useEffect(() => {
     if (autoFocus && textInputRef.current) {
@@ -71,14 +72,14 @@ const Input = ({ autoFocus, onConfirm, visible, onCancel }) => {
           )}
           {showMessage && (
             <Text style={styles.text}>
-              {inputText.length >= 3
+              {inputText.length >= MIN_CHAR_COUNT
                 ? 'Thank you'
-                : 'Please type more than 3 characters'}
+                : `Please type more than ${MIN_CHAR_COUNT} characters`}
             </Text>
           )}
           <View style={styles.buttonRow}>
             <View style={styles.buttonContainer}>
-              <Button title="Confirm" onPress={handleConfirm} />
+              <Button title="Confirm" onPress={handleConfirm} disabled={inputText.length < MIN_CHAR_COUNT} />
             </View>
             <View style={styles.buttonContainer}>
               <Button title="Cancel" onPress={handleCancel} />
