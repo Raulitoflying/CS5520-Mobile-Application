@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, TextInput, View, Text, Button, StatusBar, Modal } from 'react-native';
+import { StyleSheet, TextInput, View, Text, Button, StatusBar, Modal, Alert } from 'react-native';
 
-const Input = ({ autoFocus, onConfirm, visible }) => {
+const Input = ({ autoFocus, onConfirm, visible, onCancel }) => {
   const [inputText, setInputText] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
@@ -26,6 +26,23 @@ const Input = ({ autoFocus, onConfirm, visible }) => {
   const handleConfirm = () => {
     console.log(inputText);
     onConfirm(inputText);
+  };
+
+  const handleCancel = () => {
+    Alert.alert(
+      "Cancel",
+      "Are you sure you want to cancel?",
+      [
+        {
+          text: "No",
+          style: "cancel"
+        },
+        {
+          text: "Yes",
+          onPress: onCancel
+        }
+      ]
+    );
   };
 
   return (
@@ -57,6 +74,9 @@ const Input = ({ autoFocus, onConfirm, visible }) => {
           )}
           <View style={styles.buttonContainer}>
             <Button title="Confirm" onPress={handleConfirm} />
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button title="Cancel" onPress={handleCancel} />
           </View>
           <StatusBar style="auto" />
         </View>
@@ -99,3 +119,4 @@ const styles = StyleSheet.create({
 });
 
 export default Input;
+
