@@ -1,64 +1,26 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, TextInput, View, Text, Button, StatusBar } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import React from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import Header from './components/Header';
+import Input from './components/Input';
 
-const Input = ({ autoFocus }) => {
-  const [inputText, setInputText] = useState('');
-  const [isFocused, setIsFocused] = useState(false);
-  const [showMessage, setShowMessage] = useState(false);
-  const textInputRef = useRef(null);
-
-  useEffect(() => {
-    if (autoFocus && textInputRef.current) {
-      textInputRef.current.focus();
-    }
-  }, [autoFocus]);
-
-  const handleBlur = () => {
-    setIsFocused(false);
-    setShowMessage(true);
-  };
-
-  const handleFocus = () => {
-    setIsFocused(true);
-    setShowMessage(false);
-  };
+export default function App() {
+  const appName = "CS5520-Mobile-Application";
 
   return (
-    <View>
-      <TextInput
-        ref={textInputRef}
-        style={styles.input}
-        placeholder="Type here..."
-        value={inputText}
-        onChangeText={setInputText}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-      />
-      {isFocused && inputText.length > 0 && (
-        <Text>Character count: {inputText.length}</Text>
-      )}
-      {showMessage && (
-        <Text>
-          {inputText.length >= 3
-            ? 'Thank you'
-            : 'Please type more than 3 characters'}
-        </Text>
-      )}
-      <Button title="Confirm" onPress={() => {}} />
+    <View style={styles.container}>
+      <Header appName={appName} />
+      <Input />
       <StatusBar style="auto" />
     </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
-  input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    paddingHorizontal: 10,
-    marginVertical: 20,
-    width: '80%',
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
-
-export default Input;
