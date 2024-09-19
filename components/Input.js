@@ -22,21 +22,34 @@ const Input = ({ autoFocus }) => {
     setIsFocused(true);
     setShowMessage(false);
   };
-  
+
   return (
     <View>
       <TextInput
-        // multiline
+        ref={textInputRef}
         style={styles.input}
         placeholder="Type here..."
         value={inputText}
         onChangeText={setInputText}
+        onFocus={handleFocus}
+        onBlur={handleBlur}
       />
-      <Text>You typed: {inputText}</Text>
+      {isFocused && inputText.length > 0 && (
+        <Text>Character count: {inputText.length}</Text>
+      )}
+      {showMessage && (
+        <Text>
+          {inputText.length >= 3
+            ? 'Thank you'
+            : 'Please type more than 3 characters'}
+        </Text>
+      )}
+      <Button title="Confirm" onPress={() => {}} />
       <StatusBar style="auto" />
     </View>
   );
 };
+  
 
 const styles = StyleSheet.create({
   input: {
