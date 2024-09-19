@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { StyleSheet, TextInput, View, Text, Button, StatusBar } from 'react-native';
 
-const Input = ({ autoFocus }) => {
+const Input = ({ autoFocus, onConfirm }) => {
   const [inputText, setInputText] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
@@ -25,6 +25,7 @@ const Input = ({ autoFocus }) => {
 
   const handleConfirm = () => {
     console.log(inputText);
+    onConfirm(inputText);
   };
 
   return (
