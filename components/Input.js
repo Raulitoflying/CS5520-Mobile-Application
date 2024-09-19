@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { StyleSheet, TextInput, View, Text, StatusBar } from 'react-native'; 
 
-const Input = () => {
+const Input = ({ autoFocus }) => {
   const [inputText, setInputText] = useState('');
+  const [isFocused, setIsFocused] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
+  const textInputRef = useRef(null);
 
   return (
     <View>
