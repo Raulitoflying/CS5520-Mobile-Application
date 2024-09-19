@@ -1,5 +1,6 @@
+
 import React, { useState, useEffect, useRef } from 'react';
-import { StyleSheet, TextInput, View, Text, Button, StatusBar, Modal, Alert } from 'react-native';
+import { StyleSheet, TextInput, View, Text, Button, StatusBar, Modal, Alert, Image } from 'react-native';
 
 const Input = ({ autoFocus, onConfirm, visible, onCancel }) => {
   const [inputText, setInputText] = useState('');
@@ -85,6 +86,18 @@ const Input = ({ autoFocus, onConfirm, visible, onCancel }) => {
               <Button title="Cancel" onPress={handleCancel} />
             </View>
           </View>
+          <View style={styles.imageRow}>
+            <Image
+              style={styles.image}
+              source={{ uri: 'https://cdn-icons-png.flaticon.com/512/2617/2617812.png' }}
+              alt="Network Image"
+            />
+            <Image
+              style={styles.image}
+              source={require('../assets/local-image.png')}
+              alt="Local Image"
+            />
+          </View>
           <StatusBar style="auto" />
         </View>
       </View>
@@ -128,7 +141,17 @@ const styles = StyleSheet.create({
     width: '30%',
     marginVertical: 10,
   },
+  imageRow: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  image: {
+    width: 100,
+    height: 100,
+    marginHorizontal: 10,
+  },
 });
 
 export default Input;
-
