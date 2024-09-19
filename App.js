@@ -18,7 +18,9 @@ export default function App() {
     <View style={styles.container}>
       <Text>Welcome to {appName}</Text>
       <Header appName={appName} />
-      <Button title="Add a goal" onPress={() => setModalVisible(true)} />
+      <View style={styles.buttonContainer}>
+        <Button title="Add a goal" onPress={() => setModalVisible(true)} />
+      </View>
       <Input autoFocus={true} onConfirm={handleInputData} visible={modalVisible} />
       <Text>You typed: {inputData}</Text>
       <StatusBar style="auto" />
@@ -32,5 +34,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  buttonContainer: {
+    width: '30%',
+    marginVertical: 10,
   },
 });
