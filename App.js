@@ -47,6 +47,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    alignContent: 'flex-start',
+    justifyContent: 'flex-start',
   },
   topSection: {
     flex: 1,  // This will take 1/5th of the available space
