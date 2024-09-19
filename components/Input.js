@@ -23,6 +23,10 @@ const Input = ({ autoFocus }) => {
     setShowMessage(false);
   };
 
+  const handleConfirm = () => {
+    console.log(inputText);
+  };
+
   return (
     <View>
       <TextInput
