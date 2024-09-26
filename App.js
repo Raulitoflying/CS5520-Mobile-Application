@@ -6,7 +6,6 @@ import Input from './components/Input';
 import GoalItem from './components/GoalItem';
 
 export default function App() {
-  const [inputData, setInputData] = useState('');
   const [modalVisible, setModalVisible] = useState(false); // Controls modal visibility
   const [goals, setGoals] = useState([]); // State to store multiple goals
   const appName = "CS5520-Mobile-Application";
@@ -16,6 +15,11 @@ export default function App() {
     const newGoal = { text: data, id: Math.random().toString() };
     setGoals((currentGoals) => [...currentGoals, newGoal]);
     setModalVisible(false); // Close the modal after confirming the input
+  };
+
+  // Function to handle goal deletion
+  const handleDeleteGoal = (goalId) => {
+    setGoals((currentGoals) => currentGoals.filter((goal) => goal.id !== goalId));
   };
 
   const handleCancel = () => {
@@ -38,16 +42,16 @@ export default function App() {
     {/* Input Modal */}
     <Input autoFocus={true} onConfirm={handleInputData} visible={modalVisible} onCancel={handleCancel} />
 
-    {/* Bottom section for user input with a background color */}
-    <View style={styles.bottomView}>
-    {/* List of goals */}
-    <FlatList
-     contentContainerStyle={styles.scrollViewContent}
-      data={goals}
-      renderItem={({ item }) => <GoalItem goal={item} />}
-      keyExtractor={(item) => item.id}
-    />
-    </View>
+     {/* Bottom section for user input with a background color */}
+     <View style={styles.bottomView}>
+        {/* List of goals */}
+        <FlatList
+          contentContainerStyle={styles.scrollViewContent}
+          data={goals}
+          renderItem={({ item }) => <GoalItem goal={item} onDelete={handleDeleteGoal} />}
+          keyExtractor={(item) => item.id}
+        />
+      </View>
 
       <StatusBar style="auto" />
     </SafeAreaView>
