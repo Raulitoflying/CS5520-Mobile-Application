@@ -1,8 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Button, SafeAreaView, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Button, SafeAreaView, FlatList } from 'react-native';
 import Header from './components/Header';
 import Input from './components/Input';
+import GoalItem from './components/GoalItem';
 
 export default function App() {
   const [inputData, setInputData] = useState('');
@@ -40,14 +41,13 @@ export default function App() {
     {/* Bottom section for user input with a background color */}
     <View style={styles.bottomView}>
     {/* List of goals */}
-    <ScrollView contentContainerStyle={styles.goalList}>
-        {goals.map((goal) => (
-          <View key={goal.id} style={styles.goalItem}>
-            <Text>{goal.text}</Text>
-          </View>
-        ))}
-      </ScrollView>
-  </View>
+    <FlatList
+     contentContainerStyle={styles.scrollViewContent}
+      data={goals}
+      renderItem={({ item }) => <GoalItem goal={item} />}
+      keyExtractor={(item) => item.id}
+    />
+    </View>
 
       <StatusBar style="auto" />
     </SafeAreaView>
@@ -97,13 +97,6 @@ const styles = StyleSheet.create({
     padding: 10,    
   },
   bottomView: { flex: 4, backgroundColor: "#dcd", alignItems: "center" 
-  },
-  goalItem: {
-    padding: 10,
-    marginVertical: 10,
-    backgroundColor: '#ccc',
-    borderColor: 'black',
-    borderWidth: 1,
   },
 });
 
