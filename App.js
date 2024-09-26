@@ -68,6 +68,11 @@ export default function App() {
             ListEmptyComponent={() => (
               <Text style={styles.emptyText}>No goals to show</Text>
             )}
+            ListHeaderComponent={() =>
+              goals.length > 0 ? (
+                <Text style={styles.headerText}>My goals</Text>
+              ) : null
+            }
           />
         {/* <ScrollView contentContainerStyle={styles.scrollViewContainer}>
           {goals.map((goalObj) => {
@@ -100,4 +105,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   bottomView: { flex: 4, backgroundColor: "#dcd" },
+  emptyText: {
+    fontSize: 18,
+    color: "#888",
+    marginTop: 20,
+    textAlign: "center",
+  },
 });
