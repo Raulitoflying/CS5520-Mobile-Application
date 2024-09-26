@@ -111,4 +111,10 @@ const styles = StyleSheet.create({
     marginTop: 20,
     textAlign: "center",
   },
+  headerText: {
+    fontSize: 18,
+    color: "#888",
+    marginTop: 20,
+    textAlign: "center",
+  },
 });
