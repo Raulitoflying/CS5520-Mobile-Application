@@ -107,13 +107,13 @@ const styles = StyleSheet.create({
   bottomView: { flex: 4, backgroundColor: "#dcd" },
   emptyText: {
     fontSize: 18,
-    color: "#888",
+    color: "purple",
     marginTop: 20,
     textAlign: "center",
   },
   headerText: {
     fontSize: 18,
-    color: "#888",
+    color: "purple",
     marginTop: 20,
     textAlign: "center",
   },
