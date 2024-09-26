@@ -15,6 +15,10 @@ export default function App() {
     setModalVisible(false); // Close the modal after confirming the input
   };
 
+  const handleCancel = () => {
+    setModalVisible(false); // Close the modal
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       {/* Header and Button will take 1/5th of the space */}
@@ -28,7 +32,7 @@ export default function App() {
       </View>
 
       {/* Input Modal */}
-      <Input autoFocus={true} onConfirm={handleInputData} visible={modalVisible} />
+      <Input autoFocus={true} onConfirm={handleInputData} visible={modalVisible} onCancel={handleCancel} />
 
       {/* Bottom section for user input with a background color */}
       <View style={styles.bottomSection}>
@@ -86,3 +90,4 @@ const styles = StyleSheet.create({
     padding: 10,    
   },
 });
+
