@@ -1,17 +1,19 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Button, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, Button, SafeAreaView, FlatList } from 'react-native';
 import Header from './components/Header';
 import Input from './components/Input';
 
 export default function App() {
   const [inputData, setInputData] = useState('');
   const [modalVisible, setModalVisible] = useState(false); // Controls modal visibility
+  const [goals, setGoals] = useState([]); // State to store multiple goals
   const appName = "CS5520-Mobile-Application";
 
   // Function to handle when input data is confirmed
   const handleInputData = (data) => {
-    setInputData(data);
+    const newGoal = { text: data, id: Math.random().toString() };
+    setGoals((currentGoals) => [...currentGoals, newGoal]);
     setModalVisible(false); // Close the modal after confirming the input
   };
 
@@ -29,6 +31,15 @@ export default function App() {
           {/* Button to open modal */}
           <Button title="Add a goal" onPress={() => setModalVisible(true)} />
         </View>
+        <FlatList
+        data={goals}
+        renderItem={({ item }) => (
+          <View style={styles.goalItem}>
+            <Text>{item.text}</Text>
+          </View>
+        )}
+        keyExtractor={(item) => item.id}
+      />
       </View>
 
       {/* Input Modal */}
@@ -88,6 +99,13 @@ const styles = StyleSheet.create({
     color: 'gray',
     textAlign: 'center',
     padding: 10,    
+  },
+  goalItem: {
+    padding: 10,
+    marginVertical: 10,
+    backgroundColor: '#ccc',
+    borderColor: 'black',
+    borderWidth: 1,
   },
 });
 
