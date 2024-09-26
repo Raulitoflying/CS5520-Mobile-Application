@@ -7,6 +7,7 @@ import {
   Text,
   View,
   FlatList,
+  Alert,
 } from "react-native";
 import Header from "./Components/Header";
 import { useState } from "react";
@@ -93,6 +94,16 @@ export default function App() {
                 <Text style={styles.headerText}>My goals</Text>
               ) : null
             }
+            ListFooterComponent={() =>
+              goals.length > 0 ? (
+                <View style={styles.footerContainer}>
+                  <Button
+                    title="Delete All"
+                    onPress={deleteAllGoals}
+                  />
+                </View>
+              ) : null
+            }
           />
         {/* <ScrollView contentContainerStyle={styles.scrollViewContainer}>
           {goals.map((goalObj) => {
@@ -136,5 +147,10 @@ const styles = StyleSheet.create({
     color: "purple",
     marginTop: 20,
     textAlign: "center",
+  },
+  footerContainer: {
+    marginVertical: 20,
+    alignItems: "center",
+    color: "purple",
   },
 });
