@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, Button, SafeAreaView, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Button, SafeAreaView, ScrollView } from 'react-native';
 import Header from './components/Header';
 import Input from './components/Input';
 
@@ -34,19 +34,19 @@ export default function App() {
       </View>
         
 
-      {/* Input Modal */}
-      <Input autoFocus={true} onConfirm={handleInputData} visible={modalVisible} onCancel={handleCancel} />
+    {/* Input Modal */}
+    <Input autoFocus={true} onConfirm={handleInputData} visible={modalVisible} onCancel={handleCancel} />
 
     {/* Bottom section for user input with a background color */}
-    <View style={styles.bottomSection}>
-      {/* List of goals */}
-    <View style={styles.inputTextContainer}>
-      {goals.map((goal) => (
-        <View key={goal.id} style={styles.inputText}>
-          <Text>{goal.text}</Text>
-        </View>
-      ))}
-    </View>
+    <View style={styles.bottomView}>
+    {/* List of goals */}
+    <ScrollView contentContainerStyle={styles.goalList}>
+        {goals.map((goal) => (
+          <View key={goal.id} style={styles.goalItem}>
+            <Text>{goal.text}</Text>
+          </View>
+        ))}
+      </ScrollView>
   </View>
 
       <StatusBar style="auto" />
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
   bottomSection: {
     flex: 3.5,  
     backgroundColor: '#f0f0f0',  // Light background color for the bottom section
-    justifyContent: 'top center',
+    justifyContent: 'top-center',
     alignItems: 'center',
   },
   title: {
@@ -95,6 +95,8 @@ const styles = StyleSheet.create({
     color: 'gray',
     textAlign: 'center',
     padding: 10,    
+  },
+  bottomView: { flex: 4, backgroundColor: "#dcd", alignItems: "center" 
   },
   goalItem: {
     padding: 10,
