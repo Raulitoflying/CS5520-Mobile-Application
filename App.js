@@ -40,6 +40,26 @@ export default function App() {
       });
     });
   }
+  function deleteAllGoals() {
+    // alert the user to confirm the deletion
+    Alert.alert(
+      "Delete All Goals",
+      "Are you sure you want to delete all goals?",
+      [
+        {
+          text: "No",
+          style: "cancel",
+        },
+        {
+          text: "Yes",
+          onPress: () => {
+            setGoals([]); // empty the goals array
+          },
+        },
+      ]
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
