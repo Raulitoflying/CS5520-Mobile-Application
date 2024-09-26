@@ -31,27 +31,23 @@ export default function App() {
           {/* Button to open modal */}
           <Button title="Add a goal" onPress={() => setModalVisible(true)} />
         </View>
-        <FlatList
-        data={goals}
-        renderItem={({ item }) => (
-          <View style={styles.goalItem}>
-            <Text>{item.text}</Text>
-          </View>
-        )}
-        keyExtractor={(item) => item.id}
-      />
       </View>
+        
 
       {/* Input Modal */}
       <Input autoFocus={true} onConfirm={handleInputData} visible={modalVisible} onCancel={handleCancel} />
 
-      {/* Bottom section for user input with a background color */}
-      <View style={styles.bottomSection}>
-        {/* Wrapping the Text in a View to handle styling consistently */}
-        <View style={styles.inputTextContainer}>
-          <Text style={styles.inputText}>You typed: {inputData}</Text>
+    {/* Bottom section for user input with a background color */}
+    <View style={styles.bottomSection}>
+      {/* List of goals */}
+    <View style={styles.inputTextContainer}>
+      {goals.map((goal) => (
+        <View key={goal.id} style={styles.inputText}>
+          <Text>{goal.text}</Text>
         </View>
-      </View>
+      ))}
+    </View>
+  </View>
 
       <StatusBar style="auto" />
     </SafeAreaView>
@@ -73,7 +69,7 @@ const styles = StyleSheet.create({
   bottomSection: {
     flex: 3.5,  
     backgroundColor: '#f0f0f0',  // Light background color for the bottom section
-    justifyContent: 'center',
+    justifyContent: 'top center',
     alignItems: 'center',
   },
   title: {
