@@ -13,6 +13,7 @@ import { useState } from "react";
 import Input from "./Components/Input";
 import GoalItem from "./Components/GoalItem";
 
+
 export default function App() {
   const [receivedData, setReceivedData] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
@@ -59,12 +60,15 @@ export default function App() {
       />
       <View style={styles.bottomView}>
         <FlatList
-          contentContainerStyle={styles.scrollViewContainer}
-          data={goals}
-          renderItem={({ item }) => {
-            return <GoalItem deleteHandler={handleGoalDelete} goalObj={item} />;
-          }}
-        />
+            contentContainerStyle={styles.scrollViewContainer}
+            data={goals}
+            renderItem={({ item }) => {
+              return <GoalItem deleteHandler={handleGoalDelete} goalObj={item} />;
+            }}
+            ListEmptyComponent={() => (
+              <Text style={styles.emptyText}>No goals to show</Text>
+            )}
+          />
         {/* <ScrollView contentContainerStyle={styles.scrollViewContainer}>
           {goals.map((goalObj) => {
             return (
