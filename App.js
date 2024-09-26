@@ -61,6 +61,12 @@ export default function App() {
     );
   }
 
+  // Custom separator component
+  const renderSeparator = () => {
+    return <View style={styles.separator} />;
+  };
+
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
@@ -86,6 +92,8 @@ export default function App() {
             renderItem={({ item }) => {
               return <GoalItem deleteHandler={handleGoalDelete} goalObj={item} />;
             }}
+            // 添加分隔线
+            ItemSeparatorComponent={renderSeparator}
             ListEmptyComponent={() => (
               <Text style={styles.emptyText}>No goals to show</Text>
             )}
@@ -135,7 +143,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  bottomView: { flex: 4, backgroundColor: "#dcd" },
+  bottomView: { 
+    flex: 4, 
+    backgroundColor: "#dcd",
+    width: "100%",
+  },
+  scrollViewContainer: {
+    alignItems: "center",
+    paddingHorizontal: 20,
+    width: '100%',
+  },
   emptyText: {
     fontSize: 18,
     color: "purple",
@@ -152,5 +169,10 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     alignItems: "center",
     color: "purple",
+  },
+  separator: {
+    height: 4,
+    backgroundColor: "#A9A9A9",
+    marginVertical: 30,
   },
 });
