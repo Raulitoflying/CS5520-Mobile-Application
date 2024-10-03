@@ -9,10 +9,10 @@ import {
   FlatList,
   Alert,
 } from "react-native";
-import Header from "./components/Header";
+import Header from "./Header";
 import { useState } from "react";
-import Input from "./components/Input";
-import GoalItem from "./components/GoalItem";
+import Input from "./Input";
+import GoalItem from "./GoalItem";
 
 
 export default function App() {
