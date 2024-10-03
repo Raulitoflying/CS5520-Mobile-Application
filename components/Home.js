@@ -15,7 +15,7 @@ import Input from "./Input";
 import GoalItem from "./GoalItem";
 
 
-export default function Home() {
+export default function Home({ navigation }) {
   const [receivedData, setReceivedData] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
@@ -61,6 +61,10 @@ export default function Home() {
     );
   }
 
+  const handleDetailsPress = (goal) => {
+    navigation.navigate('Details', { goal });
+  };
+
   // Custom separator component
   const renderSeparator = () => {
     return <View style={styles.separator} />;
@@ -74,9 +78,7 @@ export default function Home() {
         <Header name={appName}></Header>
         <Button
           title="Add a Goal"
-          onPress={function () {
-            setModalVisible(true);
-          }}
+          onPress={() => setModalVisible(true)}
         />
       </View>
       <Input
@@ -87,32 +89,35 @@ export default function Home() {
       />
       <View style={styles.bottomView}>
         <FlatList
-            contentContainerStyle={styles.scrollViewContainer}
-            data={goals}
-            renderItem={({ item }) => {
-              return <GoalItem deleteHandler={handleGoalDelete} goalObj={item} />;
-            }}
-            // 添加分隔线
-            ItemSeparatorComponent={renderSeparator}
-            ListEmptyComponent={() => (
-              <Text style={styles.emptyText}>No goals to show</Text>
-            )}
-            ListHeaderComponent={() =>
-              goals.length > 0 ? (
-                <Text style={styles.headerText}>My goals</Text>
-              ) : null
-            }
-            ListFooterComponent={() =>
-              goals.length > 0 ? (
-                <View style={styles.footerContainer}>
-                  <Button
-                    title="Delete All"
-                    onPress={deleteAllGoals}
-                  />
-                </View>
-              ) : null
-            }
-          />
+          contentContainerStyle={styles.scrollViewContainer}
+          data={goals}
+          renderItem={({ item }) => (
+            <GoalItem
+              deleteHandler={handleGoalDelete}
+              goalObj={item}
+              onDetailsPress={handleDetailsPress}
+            />
+          )}
+          ItemSeparatorComponent={renderSeparator}
+          ListEmptyComponent={() => (
+            <Text style={styles.emptyText}>No goals to show</Text>
+          )}
+          ListHeaderComponent={() =>
+            goals.length > 0 ? (
+              <Text style={styles.headerText}>My goals</Text>
+            ) : null
+          }
+          ListFooterComponent={() =>
+            goals.length > 0 ? (
+              <View style={styles.footerContainer}>
+                <Button
+                  title="Delete All"
+                  onPress={deleteAllGoals}
+                />
+              </View>
+            ) : null
+          }
+        />
         {/* <ScrollView contentContainerStyle={styles.scrollViewContainer}>
           {goals.map((goalObj) => {
             return (
@@ -131,13 +136,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    // alignItems: "center",
     justifyContent: "center",
   },
   scrollViewContainer: {
     alignItems: "center",
+    paddingHorizontal: 20,
+    width: '100%',
   },
-
   topView: {
     flex: 1,
     alignItems: "center",
@@ -147,11 +152,6 @@ const styles = StyleSheet.create({
     flex: 4, 
     backgroundColor: "#dcd",
     width: "100%",
-  },
-  scrollViewContainer: {
-    alignItems: "center",
-    paddingHorizontal: 20,
-    width: '100%',
   },
   emptyText: {
     fontSize: 18,
@@ -176,3 +176,9 @@ const styles = StyleSheet.create({
     marginVertical: 30,
   },
 });
+
+
+
+  
+
+
