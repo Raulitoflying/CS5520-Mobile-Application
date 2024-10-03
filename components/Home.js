@@ -63,7 +63,7 @@ export default function Home({ navigation }) {
 
   const handleDetailsPress = (goal) => {
     // Navigate to GoalDetails and pass the goal object
-    navigation.navigate('Details', { goal });
+    navigation.navigate('Details', goal);
   };
 
   // Custom separator component
