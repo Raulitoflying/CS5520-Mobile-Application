@@ -40,12 +40,6 @@ export default function Home({ navigation }) {
     });
   }
 
-  function handleGoalPress(pressedGoal) {
-    //receive the goal obj
-    console.log(pressedGoal);
-    // navigate to GoalDetails and pass goal obj as params
-    navigation.navigate("Details", { goalData: pressedGoal });
-  }
   function deleteAll() {
     Alert.alert("Delete All", "Are you sure you want to delete all goals?", [
       {
@@ -100,7 +94,6 @@ export default function Home({ navigation }) {
           renderItem={({ item }) => {
             return (
               <GoalItem
-                pressHandler={handleGoalPress}
                 deleteHandler={handleGoalDelete}
                 goalObj={item}
               />
