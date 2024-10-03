@@ -15,7 +15,7 @@ import Input from "./Input";
 import GoalItem from "./GoalItem";
 
 
-export default function App() {
+export default function Home() {
   const [receivedData, setReceivedData] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
