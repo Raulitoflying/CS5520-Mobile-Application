@@ -18,13 +18,14 @@ const styles = StyleSheet.create({
   text: {
     color: "purple",
     padding: 5,
-    fontSize: 30,
+    fontSize: 25,
   },
   textContainer: {
     backgroundColor: "#aaa",
     borderRadius: 5,
-    marginTop: 50,
+    marginTop: 5,
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
   },
 });
