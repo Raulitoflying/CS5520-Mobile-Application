@@ -62,6 +62,7 @@ export default function Home({ navigation }) {
   }
 
   const handleDetailsPress = (goal) => {
+    // Navigate to GoalDetails and pass the goal object
     navigation.navigate('Details', { goal });
   };
 
@@ -179,6 +180,8 @@ const styles = StyleSheet.create({
 
 
 
+
+  
   
 
 
