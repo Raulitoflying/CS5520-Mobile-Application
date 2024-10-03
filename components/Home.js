@@ -7,13 +7,11 @@ import {
   Text,
   View,
   FlatList,
-  Alert,
 } from "react-native";
 import Header from "./Header";
 import { useState } from "react";
 import Input from "./Input";
 import GoalItem from "./GoalItem";
-
 
 export default function Home({ navigation }) {
   const [receivedData, setReceivedData] = useState("");
@@ -41,36 +39,24 @@ export default function Home({ navigation }) {
       });
     });
   }
-  function deleteAllGoals() {
-    // alert the user to confirm the deletion
-    Alert.alert(
-      "Delete All Goals",
-      "Are you sure you want to delete all goals?",
-      [
-        {
-          text: "No",
-          style: "cancel",
-        },
-        {
-          text: "Yes",
-          onPress: () => {
-            setGoals([]); // empty the goals array
-          },
-        },
-      ]
-    );
+
+  function handleGoalPress(pressedGoal) {
+    //receive the goal obj
+    console.log(pressedGoal);
+    // navigate to GoalDetails and pass goal obj as params
+    navigation.navigate("Details", { goalData: pressedGoal });
   }
-
-  const handleDetailsPress = (goal) => {
-    // Navigate to GoalDetails and pass the goal object
-    navigation.navigate('Details', goal);
-  };
-
-  // Custom separator component
-  const renderSeparator = () => {
-    return <View style={styles.separator} />;
-  };
-
+  function deleteAll() {
+    Alert.alert("Delete All", "Are you sure you want to delete all goals?", [
+      {
+        text: "Yes",
+        onPress: () => {
+          setGoals([]);
+        },
+      },
+      { text: "No", style: "cancel" },
+    ]);
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -79,7 +65,9 @@ export default function Home({ navigation }) {
         <Header name={appName}></Header>
         <Button
           title="Add a Goal"
-          onPress={() => setModalVisible(true)}
+          onPress={function () {
+            setModalVisible(true);
+          }}
         />
       </View>
       <Input
@@ -90,34 +78,34 @@ export default function Home({ navigation }) {
       />
       <View style={styles.bottomView}>
         <FlatList
+          ItemSeparatorComponent={
+            <View
+              style={{
+                height: 5,
+                backgroundColor: "gray",
+              }}
+            />
+          }
+          ListEmptyComponent={
+            <Text style={styles.header}>No goals to show</Text>
+          }
+          ListHeaderComponent={
+            goals.length && <Text style={styles.header}>My Goals List</Text>
+          }
+          ListFooterComponent={
+            goals.length && <Button title="Delete all" onPress={deleteAll} />
+          }
           contentContainerStyle={styles.scrollViewContainer}
           data={goals}
-          renderItem={({ item }) => (
-            <GoalItem
-              deleteHandler={handleGoalDelete}
-              goalObj={item}
-              onDetailsPress={handleDetailsPress}
-            />
-          )}
-          ItemSeparatorComponent={renderSeparator}
-          ListEmptyComponent={() => (
-            <Text style={styles.emptyText}>No goals to show</Text>
-          )}
-          ListHeaderComponent={() =>
-            goals.length > 0 ? (
-              <Text style={styles.headerText}>My goals</Text>
-            ) : null
-          }
-          ListFooterComponent={() =>
-            goals.length > 0 ? (
-              <View style={styles.footerContainer}>
-                <Button
-                  title="Delete All"
-                  onPress={deleteAllGoals}
-                />
-              </View>
-            ) : null
-          }
+          renderItem={({ item }) => {
+            return (
+              <GoalItem
+                pressHandler={handleGoalPress}
+                deleteHandler={handleGoalDelete}
+                goalObj={item}
+              />
+            );
+          }}
         />
         {/* <ScrollView contentContainerStyle={styles.scrollViewContainer}>
           {goals.map((goalObj) => {
@@ -137,51 +125,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
+    // alignItems: "center",
     justifyContent: "center",
   },
   scrollViewContainer: {
     alignItems: "center",
-    paddingHorizontal: 20,
-    width: '100%',
   },
+
   topView: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },
-  bottomView: { 
-    flex: 4, 
-    backgroundColor: "#dcd",
-    width: "100%",
-  },
-  emptyText: {
-    fontSize: 18,
-    color: "purple",
-    marginTop: 20,
-    textAlign: "center",
-  },
-  headerText: {
-    fontSize: 18,
-    color: "purple",
-    marginTop: 20,
-    textAlign: "center",
-  },
-  footerContainer: {
-    marginVertical: 20,
-    alignItems: "center",
-    color: "purple",
-  },
-  separator: {
-    height: 4,
-    backgroundColor: "#A9A9A9",
-    marginVertical: 30,
+  bottomView: { flex: 4, backgroundColor: "#dcd" },
+  header: {
+    color: "indigo",
+    fontSize: 25,
+    marginTop: 10,
   },
 });
-
-
-
-
-  
-  
-
-
