@@ -6,7 +6,8 @@ import {
   StyleSheet,
   Text,
   View,
-  FlatList,
+  FlatList, 
+  Alert
 } from "react-native";
 import Header from "./Header";
 import { useState } from "react";
