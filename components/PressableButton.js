@@ -5,16 +5,31 @@ import React from "react";
 export default function PressableButton({
     children,
     componentStyle,
-    pressedHandler,
+    pressedFunction,
     pressedStyle,
   }) {
 
     return (
-        <Pressable onPress={pressedFunction}>
+        <Pressable 
+            onPress={pressedFunction}
+            style={({ pressed }) => {
+                return [
+                    styles.defaultStyle,
+                    componentStyle, 
+                    pressed && defaultPressedStyle,
+                    pressed && pressedStyle];
+            }}  
+        >
             <View>{children}</View>
         </Pressable>
     );
 }
 
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    defaultStyle: { backgroundColor: "beige", padding: 5, borderRadius: 5 },
+    defaultPressedStyle: {
+      backgroundColor: "#a4a",
+      opacity: 0.2,
+    },
+});
