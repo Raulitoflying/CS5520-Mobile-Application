@@ -39,6 +39,8 @@ export default function GoalItem({ goalObj, deleteHandler, separators }) {
       <Pressable
         onPress={handlePress}
         onLongPress={handleLongPress} 
+        onPressIn={() => separators.highlight()}
+        onPressOut={() => separators.unhighlight()}
         style={({ pressed }) => {
           return [styles.horizontalContainer, pressed && styles.pressedStyle];
         }}
