@@ -13,9 +13,12 @@ export default function GoalItem({ goalObj, deleteHandler }) {
   
   return (
     <View style={styles.textContainer}>
-      <Text style={styles.text}>{goalObj.text}</Text>
-      <Button title="X" color="grey" onPress={handleDelete} />
-      <Button title="i" color="grey" onPress={() => navigation.navigate("Details", { goalObj })} />
+      <Pressable 
+      style={styles.horizontalContainer} onPress={() => navigation.navigate("Details", { goalObj })}>
+        <Text style={styles.text}>{goalObj.text}</Text>
+        <Button title="X" color="grey" onPress={handleDelete} />
+        <Button title="i" color="grey" onPress={() => navigation.navigate("Details", { goalObj })} />
+      </Pressable>
     </View>
   );
 }
@@ -32,5 +35,10 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     flexDirection: "row",
     alignItems: "center",
+  },
+  horizontalContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#aaa",
   },
 });
