@@ -14,8 +14,11 @@ export default function GoalItem({ goalObj, deleteHandler }) {
   return (
     <View style={styles.textContainer}>
       <Pressable 
-      android_ripple={{ color: "red", radius: 25 }}
-      style={styles.horizontalContainer} onPress={() => navigation.navigate("Details", { goalObj })}>
+      android_ripple={{ color: "white", radius: 25 }}
+      style={({ pressed }) => {
+        return [styles.horizontalContainer, pressed && styles.pressedStyle];
+      }}
+      onPress={() => navigation.navigate("Details", { goalObj })}>
         <Text style={styles.text}>{goalObj.text}</Text>
         <Button title="X" color="grey" onPress={handleDelete} />
         <Button title="i" color="grey" onPress={() => navigation.navigate("Details", { goalObj })} />
@@ -41,5 +44,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#aaa",
+  },
+  pressedStyle: {
+    opacity: 0.5,
+    backgroundColor: "red",
   },
 });
