@@ -1,4 +1,4 @@
-import { Button, StyleSheet, Text, View } from "react-native";
+import { Button, StyleSheet, Text, View, Pressable} from "react-native";
 import React from "react";
 import { useNavigation } from '@react-navigation/native';
 
@@ -14,6 +14,7 @@ export default function GoalItem({ goalObj, deleteHandler }) {
   return (
     <View style={styles.textContainer}>
       <Pressable 
+      android_ripple={{ color: "red", radius: 25 }}
       style={styles.horizontalContainer} onPress={() => navigation.navigate("Details", { goalObj })}>
         <Text style={styles.text}>{goalObj.text}</Text>
         <Button title="X" color="grey" onPress={handleDelete} />
