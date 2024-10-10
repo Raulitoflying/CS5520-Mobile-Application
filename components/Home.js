@@ -100,14 +100,7 @@ export default function Home({ navigation }) {
       />
       <View style={styles.bottomView}>
         <FlatList
-          ItemSeparatorComponent={
-            <View
-              style={{
-                height: 5,
-                backgroundColor: "gray",
-              }}
-            />
-          }
+          ItemSeparatorComponent={renderSeparator}
           ListEmptyComponent={
             <Text style={styles.header}>No goals to show</Text>
           }
@@ -119,9 +112,8 @@ export default function Home({ navigation }) {
           }
           contentContainerStyle={styles.scrollViewContainer}
           data={goals}
-          renderItem={({ item }) => {
-            return <GoalItem deleteHandler={handleGoalDelete} goalObj={item} />;
-          }}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id.toString()}
         />
         {/* <ScrollView contentContainerStyle={styles.scrollViewContainer}>
           {goals.map((goalObj) => {
@@ -162,5 +154,13 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontSize: 20,
+  },
+  separator: {
+    height: 5,
+    backgroundColor: "gray",
+    marginVertical: 20,
+  },
+  highlightedSeparator: {
+    backgroundColor: 'red',
   },
 });
