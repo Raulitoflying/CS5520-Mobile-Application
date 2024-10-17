@@ -10,20 +10,44 @@ import {
   Alert
 } from "react-native";
 import Header from "./Header";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Input from "./Input";
 import GoalItem from "./GoalItem";
 import PressableButton from "./PressableButton";
+import { database } from '../firebase/firebaseSetup';
+import { writeToDB } from '../firebase/firebaseHelper';
+import { collection, onSnapshot, query } from "firebase/firestore";
 
 export default function Home({ navigation }) {
+  console.log(database);
   const [receivedData, setReceivedData] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
   const appName = "My app!";
+  const collectionName = "goals";
+  useEffect(() => {
+    onSnapshot(collection(database, collectionName), (querySnapshot) => {
+      let newArray = [];
+      querySnapshot.forEach((docSnapshot) => {
+        newArray.push(docSnapshot.data());
+        console.log(docSnapshot.data());
+      });
+      setGoals(newArray);
+    });
+  }, []);
+
   // update to receive data
   function handleInputData(data) {
     console.log("App.js ", data);
-    let newGoal = { text: data, id: Math.random() };
+    let newGoal = { text: data };
+    //  add the newGoal to DB
+    //  call writeToDb
+    const docRef = writeToDB(newGoal, collectionName);
+    console.log(docRef);
+
+    //  update the goaals array to have newGoal as an item
+    // async
+
     //make a new obj and store the received data as the obj's text property
     setGoals((prevGoals) => {
       return [...prevGoals, newGoal];
@@ -113,7 +137,6 @@ export default function Home({ navigation }) {
           contentContainerStyle={styles.scrollViewContainer}
           data={goals}
           renderItem={renderItem}
-          keyExtractor={(item) => item.id.toString()}
         />
         {/* <ScrollView contentContainerStyle={styles.scrollViewContainer}>
           {goals.map((goalObj) => {
