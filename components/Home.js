@@ -15,7 +15,7 @@ import Input from "./Input";
 import GoalItem from "./GoalItem";
 import PressableButton from "./PressableButton";
 import { database } from '../firebase/firebaseSetup';
-import { writeToDB } from '../firebase/firebaseHelper';
+import { writeToDB,  deleteFromDB, deleteAllFromDB,} from '../firebase/firebaseHelper';
 import { collection, onSnapshot, query } from "firebase/firestore";
 
 export default function Home({ navigation }) {
@@ -25,33 +25,24 @@ export default function Home({ navigation }) {
   const [goals, setGoals] = useState([]);
   const appName = "My app!";
   const collectionName = "goals";
-  useEffect(() => {
-    onSnapshot(collection(database, collectionName), (querySnapshot) => {
+   // update to receive data
+   useEffect(() => {
+    onSnapshot(collection(database, "goals"), (querySnapshot) => {
       let newArray = [];
       querySnapshot.forEach((docSnapshot) => {
-        newArray.push(docSnapshot.data());
-        console.log(docSnapshot.data());
+        newArray.push({ ...docSnapshot.data(), id: docSnapshot.id });
       });
       setGoals(newArray);
     });
   }, []);
-
-  // update to receive data
   function handleInputData(data) {
     console.log("App.js ", data);
     let newGoal = { text: data };
-    //  add the newGoal to DB
-    //  call writeToDb
-    const docRef = writeToDB(newGoal, collectionName);
-    console.log(docRef);
-
-    //  update the goaals array to have newGoal as an item
-    // async
-
+    writeToDB(newGoal, "goals");
     //make a new obj and store the received data as the obj's text property
-    setGoals((prevGoals) => {
-      return [...prevGoals, newGoal];
-    });
+    // setGoals((prevGoals) => {
+    //   return [...prevGoals, newGoal];
+    // });
     // setReceivedData(data);
     setModalVisible(false);
   }
@@ -59,11 +50,12 @@ export default function Home({ navigation }) {
     setModalVisible(false);
   }
   function handleGoalDelete(deletedId) {
-    setGoals((prevGoals) => {
-      return prevGoals.filter((goalObj) => {
-        return goalObj.id != deletedId;
-      });
-    });
+    // setGoals((prevGoals) => {
+    //   return prevGoals.filter((goalObj) => {
+    //     return goalObj.id != deletedId;
+    //   });
+    // });
+    deleteFromDB(deletedId, "goals");
   }
 
   // function handleGoalPress(pressedGoal) {
@@ -77,7 +69,8 @@ export default function Home({ navigation }) {
       {
         text: "Yes",
         onPress: () => {
-          setGoals([]);
+          // setGoals([]);
+          deleteAllFromDB("goals");
         },
       },
       { text: "No", style: "cancel" },
