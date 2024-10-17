@@ -6,13 +6,14 @@ import {
   StyleSheet,
   Text,
   View,
-  FlatList,
+  FlatList, 
   Alert
 } from "react-native";
 import Header from "./Header";
 import { useState } from "react";
 import Input from "./Input";
 import GoalItem from "./GoalItem";
+import PressableButton from "./PressableButton";
 
 export default function Home({ navigation }) {
   const [receivedData, setReceivedData] = useState("");
@@ -41,6 +42,12 @@ export default function Home({ navigation }) {
     });
   }
 
+  // function handleGoalPress(pressedGoal) {
+  //   //receive the goal obj
+  //   console.log(pressedGoal);
+  //   // navigate to GoalDetails and pass goal obj as params
+  //   navigation.navigate("Details", { goalData: pressedGoal });
+  // }
   function deleteAll() {
     Alert.alert("Delete All", "Are you sure you want to delete all goals?", [
       {
@@ -53,17 +60,37 @@ export default function Home({ navigation }) {
     ]);
   }
 
+  const renderItem = ({ item, separators }) => (
+    <GoalItem 
+      goalObj={item} 
+      deleteHandler={handleGoalDelete} 
+      separators={separators}
+    />
+  );
+
+  const renderSeparator = ({ highlighted }) => (
+    <View style={[styles.separator, highlighted && styles.highlightedSeparator]} />
+  );
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
       <View style={styles.topView}>
         <Header name={appName}></Header>
-        <Button
+        <PressableButton
+          pressedHandler={function () {
+            setModalVisible(true);
+          }}
+          componentStyle={{ backgroundColor: "purple" }}
+        >
+          <Text style={styles.buttonText}>Add a Goal</Text>
+        </PressableButton>
+        {/* <Button
           title="Add a Goal"
           onPress={function () {
             setModalVisible(true);
           }}
-        />
+        /> */}
       </View>
       <Input
         textInputFocus={true}
@@ -73,14 +100,7 @@ export default function Home({ navigation }) {
       />
       <View style={styles.bottomView}>
         <FlatList
-          ItemSeparatorComponent={
-            <View
-              style={{
-                height: 5,
-                backgroundColor: "gray",
-              }}
-            />
-          }
+          ItemSeparatorComponent={renderSeparator}
           ListEmptyComponent={
             <Text style={styles.header}>No goals to show</Text>
           }
@@ -92,14 +112,8 @@ export default function Home({ navigation }) {
           }
           contentContainerStyle={styles.scrollViewContainer}
           data={goals}
-          renderItem={({ item }) => {
-            return (
-              <GoalItem
-                deleteHandler={handleGoalDelete}
-                goalObj={item}
-              />
-            );
-          }}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id.toString()}
         />
         {/* <ScrollView contentContainerStyle={styles.scrollViewContainer}>
           {goals.map((goalObj) => {
@@ -136,5 +150,17 @@ const styles = StyleSheet.create({
     color: "indigo",
     fontSize: 25,
     marginTop: 10,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 20,
+  },
+  separator: {
+    height: 5,
+    backgroundColor: "gray",
+    marginVertical: 20,
+  },
+  highlightedSeparator: {
+    backgroundColor: 'red',
   },
 });
