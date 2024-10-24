@@ -47,5 +47,21 @@ import {
     } catch (err) {
       console.log("Error updating document: ", err);
     }
+  
+  }
+  
+  export async function getAllDocuments(collectionName) {
+    try {
+      const querySnapshot = await getDocs(collection(database, collectionName));
+      const data = [];
+      if (!querySnapshot.empty) {
+        querySnapshot.forEach((docSnap) => {
+          data.push(docSnap.data());
+        });
+      }
+      return data;
+    } catch (err) {
+      console.log("get all docs ", err);
+    }
   }
   
