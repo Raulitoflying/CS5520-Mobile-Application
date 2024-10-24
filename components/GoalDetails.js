@@ -2,13 +2,20 @@ import { Button, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import PressableButton from "./PressableButton";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { addWarningToDB } from "../firebase/firebaseHelper";
 
 export default function GoalDetails({ navigation, route }) {
   const [warning, setWarning] = useState(false);
   function warningHandler() {
     setWarning(true);
     navigation.setOptions({ title: "Warning!" });
+  
+    if (route.params && route.params.goalData) {
+      // Call the addWarningToDB function to update Firestore
+      addWarningToDB(route.params.goalData.id, "goals");
+    }
   }
+  
   useEffect(() => {
     navigation.setOptions({
       headerRight: () => {
@@ -25,11 +32,11 @@ export default function GoalDetails({ navigation, route }) {
       },
     });
   }, []);
-
+  
   function moreDetailsHandler() {
     navigation.push("Details");
   }
-
+  
   return (
     <View>
       {route.params ? (
@@ -43,10 +50,10 @@ export default function GoalDetails({ navigation, route }) {
       <Button title="More Details" onPress={moreDetailsHandler} />
     </View>
   );
-}
-
-const styles = StyleSheet.create({
+  }
+  
+  const styles = StyleSheet.create({
   warningStyle: {
     color: "red",
   },
-});
+  });

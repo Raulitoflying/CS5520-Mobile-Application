@@ -27,14 +27,18 @@ export default function Home({ navigation }) {
   const collectionName = "goals";
    // update to receive data
    useEffect(() => {
-    onSnapshot(collection(database, "goals"), (querySnapshot) => {
-      let newArray = [];
-      querySnapshot.forEach((docSnapshot) => {
-        newArray.push({ ...docSnapshot.data(), id: docSnapshot.id });
-      });
-      setGoals(newArray);
-    });
-  }, []);
+  const unsubscribe = onSnapshot(collection(database, collectionName), (snapshot) => {
+    const goalsData = snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+    setGoals(goalsData);
+  });
+
+  // Cleanup function to unsubscribe when the component unmounts
+  return () => {
+    console.log("Unsubscribing from Firestore listener");
+    unsubscribe();
+  };
+}, []);
+
   function handleInputData(data) {
     console.log("App.js ", data);
     let newGoal = { text: data };

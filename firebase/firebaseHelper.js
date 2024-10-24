@@ -4,6 +4,7 @@ import {
     deleteDoc,
     doc,
     getDocs,
+    updateDoc
   } from "firebase/firestore";
   import { database } from "./firebaseSetup";
   
@@ -35,3 +36,16 @@ import {
       console.log("delete all ", err);
     }
   }
+
+  export async function addWarningToDB(goalId, collectionName) {
+    try {
+      const docRef = doc(database, collectionName, goalId);
+      
+      // Use updateDoc to only update the warning field
+      await updateDoc(docRef, { warning: true });
+      console.log("Document successfully updated with warning");
+    } catch (err) {
+      console.log("Error updating document: ", err);
+    }
+  }
+  
