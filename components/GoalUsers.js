@@ -1,11 +1,25 @@
 import { StyleSheet, Text, View, FlatList } from "react-native";
 import React, { useEffect, useState } from "react";
+import { getAllDocuments, writeToDB } from "../Firebase/firestoreHelper";
 
-export default function GoalUsers() {
+export default function GoalUsers({ id }) {
     const [users, setUsers] = useState([]);
     useEffect(() => {
         async function fetchData() {
             try {
+                const dataFromDB = await getAllDocuments(`goals/${id}/users`);
+                console.log(dataFromDB);
+                if (dataFromDB.length) {
+                    console.log("reading data from DB");
+                    setUsers(
+                        dataFromDB.map((user) => {
+                            return user.name;
+                        })
+                    );
+                return;
+                }
+                console.log("reading data from API");
+
                 const response = await fetch("https://jsonplaceholder.typicode.com/users");
                 console.log(response.status);
                 if (!response.ok) {
