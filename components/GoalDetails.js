@@ -10,7 +10,6 @@ export default function GoalDetails({ navigation, route }) {
   function warningHandler() {
     setWarning(true);
     navigation.setOptions({ title: "Warning!" });
-    updateDB(route.params.goalData.id, { warning: true }, "goals");
   }
   useEffect(() => {
     navigation.setOptions({
