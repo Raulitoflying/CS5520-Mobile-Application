@@ -44,7 +44,7 @@ export default function App() {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       console.log(user);
-      // if user is 
+      // if user is logged in, set the state to true
       if (user) {
         setIsUserLoggedIn(true);
       } else {
