@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Home from "./components/Home";
+import { useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import GoalDetails from "./components/GoalDetails";
@@ -7,6 +8,8 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import { isUserLoggedIn } from "./firebase/firebaseSetup";
 import { Button } from "react-native";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase/firebaseSetup";
 
 const Stack = createNativeStackNavigator();
 
@@ -17,7 +20,7 @@ const authStack = (
   </>
 );
 
-const AppStack = (
+const appStack = (
   <>
     <Stack.Screen
       name="Home"
@@ -37,12 +40,24 @@ const commonHeaderOptions = {
 };
 
 export default function App() {
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      console.log(user);
+      // if user is 
+      if (user) {
+        setIsUserLoggedIn(true);
+      } else {
+        setIsUserLoggedIn(false);
+      }
+    });
+  });
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Signup" screenOptions={commonHeaderOptions}>
         {
           // if user is not logged in, show the auth stack
-          isUserLoggedIn ? AppStack : AuthStack
+          isUserLoggedIn ? appStack : authStack
         }
       </Stack.Navigator>
     </NavigationContainer>
