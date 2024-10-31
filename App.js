@@ -8,8 +8,12 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import { isUserLoggedIn } from "./firebase/firebaseSetup";
 import { Button } from "react-native";
-import { onAuthStateChanged } from "firebase/auth";
+import PressableButton from "./components/PressableButton";
+import Profile from "./components/Profile";
+import { AntDesign } from "@expo/vector-icons";
+import { onAuthStateChanged, signInAnonymously, signOut } from "firebase/auth";
 import { auth } from "./firebase/firebaseSetup";
+
 
 const Stack = createNativeStackNavigator();
 
@@ -25,14 +29,63 @@ const appStack = (
     <Stack.Screen
       name="Home"
       component={Home}
-      options={{ title: "My Goals" }}
+      options={({ navigation }) => {
+        return {
+          title: "My Goals",
+          headerRight: () => {
+            return (
+              <PressableButton
+                componentStyle={{ backgroundColor: "purple" }}
+                pressedHandler={() => {
+                  navigation.navigate("Profile");
+                }}
+              >
+                <AntDesign name="user" size={24} color="white" />
+              </PressableButton>
+            );
+          },
+        };
+      }}
     />
     <Stack.Screen
       name="Details"
       component={GoalDetails}
+      options={({ route }) => {
+        return {
+          title: route.params ? route.params.goalData.text : "More Details",
+          // headerRight: () => {
+          //   return (
+          //     <Button
+          //       title="Warning"
+          //       onPress={() => {
+          //         console.log("warning");
+          //       }}
+          //     />
+          //   );
+          // },
+        };
+      }}
+    />
+    <Stack.Screen
+      name="Profile"
+      component={Profile}
+      options={{
+        headerRight: () => {
+          return (
+            <PressableButton
+              componentStyle={{ backgroundColor: "purple" }}
+              pressedHandler={() => {
+                signOut(auth);
+              }}
+            >
+              <AntDesign name="logout" size={24} color="white" />
+            </PressableButton>
+          );
+        },
+      }}
     />
   </>
-)
+);
 
 const commonHeaderOptions = {
   headerStyle: { backgroundColor: "purple" },
@@ -42,7 +95,7 @@ const commonHeaderOptions = {
 export default function App() {
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
       console.log(user);
       // if user is logged in, set the state to true
       if (user) {
@@ -51,6 +104,9 @@ export default function App() {
         setIsUserLoggedIn(false);
       }
     });
+    return () => {
+      unsubscribe();
+    }
   });
   return (
     <NavigationContainer>
