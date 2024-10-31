@@ -36,7 +36,11 @@ export default function Signup({ navigation }) {
       console.log("Sign up", error);
       // tell the user that there was an error
       Alert.alert("Error", error.message);
+
+      if (error.code === "auth/week-password") {
+        Alert.alert("Password is too weak");
       
+      }
     }
   };
   return (
