@@ -14,6 +14,18 @@ export default function Signup({ navigation }) {
   };
   const signupHandler = async () => {
     try {
+      if (
+          email.length === 0 ||
+          password.length === 0 ||
+          confirmPassword.length === 0
+        ) {
+          Alert.alert("All fields should be provided");
+          return;
+        }
+        if (password !== confirmPassword) {
+          Alert.alert("password and confirm password don't match");
+          return;
+        }
       const userCred = await createUserWithEmailAndPassword(
         auth,
         email,
@@ -21,7 +33,10 @@ export default function Signup({ navigation }) {
       );
       console.log(userCred.user);
     } catch (error) {
-      console.log("Sign up error", error);
+      console.log("Sign up", error);
+      // tell the user that there was an error
+      Alert.alert("Error", error.message);
+      
     }
   };
   return (
