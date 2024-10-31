@@ -13,34 +13,15 @@ export default function Signup({ navigation }) {
     navigation.replace("Login");
   };
   const signupHandler = async () => {
-    // do some validation:
-    //1. email, password and confirmpassword are not empty
-    //2.
-    //create a new user using createUserWithEmailAndPassword
     try {
-      if (
-        email.length === 0 ||
-        password.length === 0 ||
-        confirmPassword.length === 0
-      ) {
-        Alert.alert("All fields should be provided");
-        return;
-      }
-      if (password !== confirmPassword) {
-        Alert.alert("password and confirm password don't match");
-        return;
-      }
-      // any other check you could do to make sure we have valid data
-      //e.g. regex for email, password length,...
       const userCred = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
       console.log(userCred.user);
-    } catch (err) {
-      console.log("sign up ", err);
-      Alert.alert(err.message);
+    } catch (error) {
+      console.log("Sign up error", error);
     }
   };
   return (
