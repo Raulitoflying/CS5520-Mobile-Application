@@ -11,7 +11,20 @@ export default function Login({ navigation }) {
     navigation.replace("Signup");
   };
   const loginHandler = async () => {
-    
+    // data validation
+    try {
+      if (
+        email.length === 0 ||
+        password.length === 0
+      ) {
+        Alert.alert("All fields should be provided");
+        return;
+      }
+      const userCred = await signInWithEmailAndPassword(auth, email, password);
+      console.log(userCred.user);
+    } catch (err) {
+      console.log("login ", err);
+    }
   };
 
   return (
@@ -38,8 +51,9 @@ export default function Login({ navigation }) {
       <Button title="Login" onPress={loginHandler} />
       <Button title="New User? Create An Account" onPress={signupHandler} />
     </View>
-  );
+  );  
 }
+
 
 const styles = StyleSheet.create({
   container: {
