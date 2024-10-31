@@ -17,7 +17,7 @@ export default function Login({ navigation }) {
         email.length === 0 ||
         password.length === 0
       ) {
-        Alert.alert("All fields should be provided");
+        Alert.alert("No fields should be empty");
         return;
       }
       const userCred = await signInWithEmailAndPassword(auth, email, password);
