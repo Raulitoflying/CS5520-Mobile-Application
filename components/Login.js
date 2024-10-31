@@ -11,18 +11,7 @@ export default function Login({ navigation }) {
     navigation.replace("Signup");
   };
   const loginHandler = async () => {
-    // log user in with signInWithEmailAndPassword
-    // data validation
-    if (email.length === 0 || password.length === 0) {
-      Alert.alert("All fields should be provided");
-      return;
-    }
-    try {
-      const userCred = await signInWithEmailAndPassword(auth, email, password);
-      console.log(userCred.user);
-    } catch (err) {
-      console.log("login ", err);
-    }
+    
   };
 
   return (
