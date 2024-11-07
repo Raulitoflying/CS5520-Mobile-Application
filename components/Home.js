@@ -67,7 +67,7 @@ export default function Home({ navigation }) {
     let newGoal = { text: data.text };
     // add info about owner of the goal
     newGoal = { ...newGoal, owner: auth.currentUser.uid };
-    // writeToDB(newGoal, "goals");
+    writeToDB(newGoal, "goals");
     //make a new obj and store the received data as the obj's text property
     // setGoals((prevGoals) => {
     //   return [...prevGoals, newGoal];
