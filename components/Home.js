@@ -28,13 +28,21 @@ export default function Home({ navigation }) {
    // update to receive data
    useEffect(() => {
     const unsubscribe = onSnapshot(
-      collection(database, "goals"),
+      // we should update the listener to only listen to our own data
+      query(
+        collection(database, "goals"),
+        where("owner", "==", auth.currentUser.uid)
+      ),
       (querySnapshot) => {
         let newArray = [];
         querySnapshot.forEach((docSnapshot) => {
           newArray.push({ ...docSnapshot.data(), id: docSnapshot.id });
         });
         setGoals(newArray);
+      },
+      (error) => {
+        console.log(error);
+        Alert.alert(error.message);
       }
     );
     return () => unsubscribe();
