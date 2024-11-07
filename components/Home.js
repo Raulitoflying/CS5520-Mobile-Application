@@ -42,8 +42,10 @@ export default function Home({ navigation }) {
 
   function handleInputData(data) {
     console.log("App.js ", data);
-    let newGoal = { text: data };
-    writeToDB(newGoal, "goals");
+    let newGoal = { text: data.text};
+    // add info about the owner
+    newGoal = { ...newGoal, owner: auth.currentUser.uid };
+    // writeToDB(newGoal, "goals");
     //make a new obj and store the received data as the obj's text property
     // setGoals((prevGoals) => {
     //   return [...prevGoals, newGoal];
