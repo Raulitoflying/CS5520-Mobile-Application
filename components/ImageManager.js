@@ -4,6 +4,21 @@ import * as ImagePicker from "expo-image-picker";
 
 export default function ImageManager() {
     const [response, requestPermission] = ImagePicker.useCameraPermissions();
+    async function verifyPermission() {
+        try {
+          //check if user has given permission
+          //if so return true
+          if (response.granted) {
+            return true;
+          }
+          //if not ask for permission and return what user has chosen
+          const permissionResponse = await requestPermission();
+          return permissionResponse.granted;
+        } catch (err) {
+          console.log("verify permission ", err);
+        }
+      }
+      
     async function takeImageHandler() { 
         try {
         const result = await ImagePicker.launchCameraAsync({
