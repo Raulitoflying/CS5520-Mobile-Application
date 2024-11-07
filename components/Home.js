@@ -19,14 +19,12 @@ import { writeToDB,  deleteFromDB, deleteAllFromDB,} from '../firebase/firebaseH
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 
 export default function Home({ navigation }) {
-  console.log(database);
   const [receivedData, setReceivedData] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
   const appName = "My app!";
-  const collectionName = "goals";
-   // update to receive data
-   useEffect(() => {
+  // update to receive data
+  useEffect(() => {
     const unsubscribe = onSnapshot(
       // we should update the listener to only listen to our own data
       query(
@@ -48,10 +46,26 @@ export default function Home({ navigation }) {
     return () => unsubscribe();
   }, []);
 
+  async function handleImageData(uri) {
+    try {
+      // receive text and image uri
+      const response = await fetch(uri);
+      if (!response.ok) {
+        throw new Error("Image upload failed");
+      }
+      const blob = await response.blob();
+      const imageName = uri.substring(uri.lastIndexOf('/') + 1);
+      const imageRef = await ref(storage, `images/${imageName}`)
+      const uploadResult = await uploadBytesResumable(imageRef, blob);
+    } catch (uploadResult) {
+      console.log("handle image data ", err);
+    }
+  }
+  
   function handleInputData(data) {
     console.log("App.js ", data);
-    let newGoal = { text: data.text};
-    // add info about the owner
+    let newGoal = { text: data.text };
+    // add info about owner of the goal
     newGoal = { ...newGoal, owner: auth.currentUser.uid };
     // writeToDB(newGoal, "goals");
     //make a new obj and store the received data as the obj's text property
@@ -92,18 +106,6 @@ export default function Home({ navigation }) {
     ]);
   }
 
-  const renderItem = ({ item, separators }) => (
-    <GoalItem 
-      goalObj={item} 
-      deleteHandler={handleGoalDelete} 
-      separators={separators}
-    />
-  );
-
-  const renderSeparator = ({ highlighted }) => (
-    <View style={[styles.separator, highlighted && styles.highlightedSeparator]} />
-  );
-
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar style="auto" />
@@ -132,7 +134,16 @@ export default function Home({ navigation }) {
       />
       <View style={styles.bottomView}>
         <FlatList
-          ItemSeparatorComponent={renderSeparator}
+          ItemSeparatorComponent={({ highlighted }) => {
+            return (
+              <View
+                style={{
+                  height: 5,
+                  backgroundColor: highlighted ? "purple" : "gray",
+                }}
+              />
+            );
+          }}
           ListEmptyComponent={
             <Text style={styles.header}>No goals to show</Text>
           }
@@ -144,7 +155,15 @@ export default function Home({ navigation }) {
           }
           contentContainerStyle={styles.scrollViewContainer}
           data={goals}
-          renderItem={renderItem}
+          renderItem={({ item, separators }) => {
+            return (
+              <GoalItem
+                separators={separators}
+                deleteHandler={handleGoalDelete}
+                goalObj={item}
+              />
+            );
+          }}
         />
         {/* <ScrollView contentContainerStyle={styles.scrollViewContainer}>
           {goals.map((goalObj) => {
@@ -185,13 +204,5 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "white",
     fontSize: 20,
-  },
-  separator: {
-    height: 5,
-    backgroundColor: "gray",
-    marginVertical: 20,
-  },
-  highlightedSeparator: {
-    backgroundColor: 'red',
   },
 });
