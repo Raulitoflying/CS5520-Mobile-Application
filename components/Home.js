@@ -7,16 +7,16 @@ import {
   Text,
   View,
   FlatList, 
-  Alert
+  Alert,
 } from "react-native";
 import Header from "./Header";
 import { useState, useEffect } from "react";
 import Input from "./Input";
 import GoalItem from "./GoalItem";
 import PressableButton from "./PressableButton";
-import { database } from '../firebase/firebaseSetup';
+import { auth, database } from '../firebase/firebaseSetup';
 import { writeToDB,  deleteFromDB, deleteAllFromDB,} from '../firebase/firebaseHelper';
-import { collection, onSnapshot, query } from "firebase/firestore";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
 
 export default function Home({ navigation }) {
   console.log(database);
