@@ -3,9 +3,15 @@ import React, { useState } from "react";
 import * as ImagePicker from "expo-image-picker";
 
 export default function ImageManager() {
-    function takeImageHandler() { 
-        ImagePicker.requestMediaLibraryPermissionsAsync();
-
+    const [response, requestPermission] = ImagePicker.useCameraPermissions();
+    async function takeImageHandler() { 
+        try {
+        const result = await ImagePicker.launchCameraAsync({
+           allowsEditing: true,
+        });
+        console.log(result);
+    } catch (error) {
+        console.log("take an iamge error", error);
     }
     return (
         <View>
@@ -24,3 +30,4 @@ export default function ImageManager() {
     }
     
     const styles = StyleSheet.create({ image: { width: 100, height: 100 } });
+}
