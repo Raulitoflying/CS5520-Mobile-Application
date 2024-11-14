@@ -1,19 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Home from "./components/Home";
-import { useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import GoalDetails from "./components/GoalDetails";
+import { Button } from "react-native";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
-import { isUserLoggedIn } from "./firebase/firebaseSetup";
-import { Button } from "react-native";
-import PressableButton from "./components/PressableButton";
-import Profile from "./components/Profile";
-import { AntDesign } from "@expo/vector-icons";
-import { onAuthStateChanged, signInAnonymously, signOut } from "firebase/auth";
 import { auth } from "./firebase/firebaseSetup";
-
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import Profile from "./components/Profile";
+import PressableButton from "./components/PressableButton";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import Map from "./components/Map";
 
 const Stack = createNativeStackNavigator();
 
@@ -23,7 +21,6 @@ const authStack = (
     <Stack.Screen name="Login" component={Login} />
   </>
 );
-
 const appStack = (
   <>
     <Stack.Screen
@@ -84,37 +81,30 @@ const appStack = (
         },
       }}
     />
+    <Stack.Screen name="Map" component={Map} />
   </>
 );
-
-const commonHeaderOptions = {
-  headerStyle: { backgroundColor: "purple" },
-  headerTintColor: "white",
-};
-
 export default function App() {
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      console.log(user);
-      // if user is logged in, set the state to true
+    onAuthStateChanged(auth, (user) => {
       if (user) {
         setIsUserLoggedIn(true);
       } else {
         setIsUserLoggedIn(false);
       }
+      //based on the user variable, set the state variable isUserLoggedIn
     });
-    return () => {
-      unsubscribe();
-    }
-  });
+  }, []);
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Signup" screenOptions={commonHeaderOptions}>
-        {
-          // if user is not logged in, show the auth stack
-          isUserLoggedIn ? appStack : authStack
-        }
+      <Stack.Navigator
+        screenOptions={{
+          headerStyle: { backgroundColor: "purple" },
+          headerTintColor: "white",
+        }}
+      >
+        {isUserLoggedIn ? appStack : authStack}
       </Stack.Navigator>
     </NavigationContainer>
   );
