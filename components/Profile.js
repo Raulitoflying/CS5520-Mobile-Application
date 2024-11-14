@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { auth } from "../firebase/firebaseSetup";
+import LocationManager from "./LocationManager";
 
 export default function Profile() {
   const [user, setUser] = useState(null);
@@ -24,6 +25,7 @@ export default function Profile() {
     <View style={styles.container}>
       <Text>Email: {user.email}</Text>
       <Text>UID: {user.uid}</Text>
+      <LocationManager />
     </View>
   );
 }
