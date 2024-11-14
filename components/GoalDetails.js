@@ -2,7 +2,7 @@ import { Button, Image, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import PressableButton from "./PressableButton";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { updateDB } from "../Firebase/firebaseHelper";
+import { updateDB } from "../firebase/firebaseHelper";
 import GoalUsers from "./GoalUsers";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../firebase/firebaseSetup";
