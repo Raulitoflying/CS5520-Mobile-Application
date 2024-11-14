@@ -19,7 +19,7 @@ import {
   writeToDB,
   deleteFromDB,
   deleteAllFromDB,
-} from "./firebase/firebaseHelper";
+} from "../firebase/firebaseHelper";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { ref, uploadBytesResumable } from "firebase/storage";
 
