@@ -1,8 +1,8 @@
-import { Button, StyleSheet, Text, View, Image } from "react-native";
+import { Button, Image, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import PressableButton from "./PressableButton";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { updateDB } from "../firebase/firebaseHelper";
+import { updateDB } from "../Firebase/firebaseHelper";
 import GoalUsers from "./GoalUsers";
 import { getDownloadURL, ref } from "firebase/storage";
 import { storage } from "../firebase/firebaseSetup";
@@ -13,6 +13,7 @@ export default function GoalDetails({ navigation, route }) {
   function warningHandler() {
     setWarning(true);
     navigation.setOptions({ title: "Warning!" });
+    updateDB(route.params.goalData.id, { warning: true }, "goals");
   }
   useEffect(() => {
     navigation.setOptions({
@@ -30,7 +31,6 @@ export default function GoalDetails({ navigation, route }) {
       },
     });
   }, []);
-
   useEffect(() => {
     async function getImageUri() {
       try {
@@ -45,11 +45,10 @@ export default function GoalDetails({ navigation, route }) {
     }
     getImageUri();
   }, []);
-
   function moreDetailsHandler() {
     navigation.push("Details");
   }
-  
+
   return (
     <View>
       {route.params ? (
@@ -61,23 +60,23 @@ export default function GoalDetails({ navigation, route }) {
         <Text style={warning && styles.warningStyle}>More details</Text>
       )}
       <Button title="More Details" onPress={moreDetailsHandler} />
-      {route.params && <GoalUsers id={route.params.goalData.id} />}
-        {imageUri && (
-          <Image
-            source={{
-              uri: imageUri,
-            }}
-            style={styles.image}
-            alt="Image of the goal"
-          />
-        )}
+      <GoalUsers id={route.params.goalData.id} />
+      {imageUri && (
+        <Image
+          source={{
+            uri: imageUri,
+          }}
+          style={styles.image}
+          alt="Image of the goal"
+        />
+      )}
     </View>
   );
-  }
-  
-  const styles = StyleSheet.create({
+}
+
+const styles = StyleSheet.create({
   warningStyle: {
     color: "red",
   },
   image: { width: 100, height: 100 },
-  });
+});
