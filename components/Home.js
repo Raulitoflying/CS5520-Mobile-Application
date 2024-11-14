@@ -14,9 +14,10 @@ import { useState, useEffect } from "react";
 import Input from "./Input";
 import GoalItem from "./GoalItem";
 import PressableButton from "./PressableButton";
-import { auth, database } from '../firebase/firebaseSetup';
+import { auth, database, storage } from '../firebase/firebaseSetup';
 import { writeToDB,  deleteFromDB, deleteAllFromDB,} from '../firebase/firebaseHelper';
 import { collection, onSnapshot, query, where } from "firebase/firestore";
+import { ref, uploadBytesResumable } from "firebase/storage";
 
 export default function Home({ navigation }) {
   const [receivedData, setReceivedData] = useState("");
@@ -48,25 +49,32 @@ export default function Home({ navigation }) {
 
   async function handleImageData(uri) {
     try {
-      // receive text and image uri
+      //fetch the image data
       const response = await fetch(uri);
       if (!response.ok) {
-        throw new Error("Image upload failed");
+        throw new Error(`fetch error happened with status ${response.status}`);
       }
       const blob = await response.blob();
-      const imageName = uri.substring(uri.lastIndexOf('/') + 1);
-      const imageRef = await ref(storage, `images/${imageName}`)
+      const imageName = uri.substring(uri.lastIndexOf("/") + 1);
+      const imageRef = ref(storage, `images/${imageName}`);
       const uploadResult = await uploadBytesResumable(imageRef, blob);
-    } catch (uploadResult) {
-      console.log("handle image data ", err);
+      console.log(uploadResult);
+    } catch (err) {
+      console.log("handle Image data ", err);
     }
   }
   
   function handleInputData(data) {
     console.log("App.js ", data);
+    if (data.imageUri) {
+      handleImageData(data.imageUri);
+    }
     let newGoal = { text: data.text };
     // add info about owner of the goal
     newGoal = { ...newGoal, owner: auth.currentUser.uid };
+    if (uri) {
+      newGoal = { ...newGoal, imageUri: uri };
+    }
     writeToDB(newGoal, "goals");
     //make a new obj and store the received data as the obj's text property
     // setGoals((prevGoals) => {
