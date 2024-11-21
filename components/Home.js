@@ -22,12 +22,22 @@ import {
 } from "../firebase/firebaseHelper";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { ref, uploadBytesResumable } from "firebase/storage";
+import * as Notifications from "expo-notifications";
 
 export default function Home({ navigation }) {
   const [receivedData, setReceivedData] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [goals, setGoals] = useState([]);
   const appName = "My app!";
+  useEffect(() => {
+    console.log("Home use effect");
+    async function getPushToken() {
+      const pushToken = await Notifications.getExpoPushTokenAsync({});
+      console.log(pushToken);
+    }
+    getPushToken();
+  }, []);
+  
   // update to receive data
   useEffect(() => {
     const unsubscribe = onSnapshot(
