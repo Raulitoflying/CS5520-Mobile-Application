@@ -38,10 +38,15 @@ export default function LocationManager() {
   }, [route]);
 
   function saveLocationHandler() {
+    try{
     //call updateDB from firestoreHelper and save location in a user doc with id= user's uid
     updateDB(auth.currentUser.uid, { location }, "users");
+    console.log("location saved");
     navigation.navigate("Home");
+  } catch (err) {
+    console.log("save location ", err);
   }
+}
 
   async function verifyPermission() {
     try {
