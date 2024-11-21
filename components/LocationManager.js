@@ -9,7 +9,7 @@ import {
   } from "react-native";
 import React, { useEffect, useState } from "react";
 import * as Location from "expo-location";
-import { updateDB } from "../firebase/firebaseHelper";
+import { getOneDocument,updateDB } from "../firebase/firebaseHelper";
 import { auth } from "../firebase/firebaseSetup";
 const windowWidth = Dimensions.get("window").width;
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -19,6 +19,17 @@ export default function LocationManager() {
   const navigation = useNavigation();
   const route = useRoute();
   const [response, requestPermission] = Location.useForegroundPermissions();
+  useEffect(() => {
+    async function getUserData() {
+      const userData = await getOneDocument(auth.currentUser.uid, "users");
+      if (userData && userData.location) {
+        // read the location info from userData
+        setLocation(userData.location);
+      }
+    }
+    getUserData();
+  }, []);
+
   useEffect(() => {
     if (route.params) {
       setLocation(route.params.selectedLocation);
