@@ -10,7 +10,6 @@ export default function Map({ navigation }) {
       navigation.navigate("Profile", { selectedLocation });
     }
   return (
-    
     <>
       <MapView
         onPress={(e) => {
