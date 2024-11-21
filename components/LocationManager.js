@@ -9,6 +9,8 @@ import {
   } from "react-native";
 import React, { useEffect, useState } from "react";
 import * as Location from "expo-location";
+import { updateDB } from "../firebase/firebaseHelper";
+import { auth } from "../firebase/firebaseSetup";
 const windowWidth = Dimensions.get("window").width;
 import { useNavigation, useRoute } from "@react-navigation/native";
 
@@ -23,6 +25,13 @@ export default function LocationManager() {
     }
     //setLocation
   }, [route]);
+
+  function saveLocationHandler() {
+    //call updateDB from firestoreHelper and save location in a user doc with id= user's uid
+    updateDB(auth.currentUser.uid, { location }, "users");
+    navigation.navigate("Home");
+  }
+
   async function verifyPermission() {
     try {
       //check if user has given permission
@@ -77,6 +86,11 @@ export default function LocationManager() {
           style={styles.image}
         />
       )}
+      <Button
+        disabled={!location}
+        title="Save My Location"
+        onPress={saveLocationHandler}
+      />
     </View>
   );
 }
