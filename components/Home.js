@@ -6,17 +6,22 @@ import {
   StyleSheet,
   Text,
   View,
-  FlatList, 
+  FlatList,
   Alert,
 } from "react-native";
 import Header from "./Header";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Input from "./Input";
 import GoalItem from "./GoalItem";
 import PressableButton from "./PressableButton";
-import { auth, database } from '../firebase/firebaseSetup';
-import { writeToDB,  deleteFromDB, deleteAllFromDB,} from '../firebase/firebaseHelper';
+import { auth, database, storage } from "../firebase/firebaseSetup";
+import {
+  writeToDB,
+  deleteFromDB,
+  deleteAllFromDB,
+} from "../firebase/firebaseHelper";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
+import { ref, uploadBytesResumable } from "firebase/storage";
 
 export default function Home({ navigation }) {
   const [receivedData, setReceivedData] = useState("");
@@ -46,27 +51,38 @@ export default function Home({ navigation }) {
     return () => unsubscribe();
   }, []);
 
-  async function handleImageData(uri) {
+  async function fetchAndUploadImage(uri) {
     try {
-      // receive text and image uri
       const response = await fetch(uri);
       if (!response.ok) {
-        throw new Error("Image upload failed");
+        // what to do in case of an HTTP error e.g. 404
+        // throw an error
+        throw new Error(`An error happened with status: ${response.status}`);
       }
       const blob = await response.blob();
-      const imageName = uri.substring(uri.lastIndexOf('/') + 1);
-      const imageRef = await ref(storage, `images/${imageName}`)
+      // let's upload blob to storage
+      const imageName = uri.substring(uri.lastIndexOf("/") + 1);
+      const imageRef = ref(storage, `images/${imageName}`);
       const uploadResult = await uploadBytesResumable(imageRef, blob);
-    } catch (uploadResult) {
-      console.log("handle image data ", err);
+      return uploadResult.metadata.fullPath;
+    } catch (err) {
+      console.log("fetch and upload image ", err);
     }
   }
-  
-  function handleInputData(data) {
+  // receive text and image uri
+  async function handleInputData(data) {
     console.log("App.js ", data);
+    // upload the image to storage, and get a storage ref
+    let uri = "";
+    if (data.imageUri) {
+      uri = await fetchAndUploadImage(data.imageUri);
+    }
     let newGoal = { text: data.text };
     // add info about owner of the goal
     newGoal = { ...newGoal, owner: auth.currentUser.uid };
+    if (uri) {
+      newGoal = { ...newGoal, imageUri: uri };
+    }
     writeToDB(newGoal, "goals");
     //make a new obj and store the received data as the obj's text property
     // setGoals((prevGoals) => {
