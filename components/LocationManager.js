@@ -7,15 +7,47 @@ import {
     Text,
     View,
   } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as Location from "expo-location";
+import { getOneDocument,updateDB } from "../firebase/firebaseHelper";
+import { auth } from "../firebase/firebaseSetup";
 const windowWidth = Dimensions.get("window").width;
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
 export default function LocationManager() {
   const [location, setLocation] = useState(null);
   const navigation = useNavigation();
+  const route = useRoute();
   const [response, requestPermission] = Location.useForegroundPermissions();
+  useEffect(() => {
+    async function getUserData() {
+      const userData = await getOneDocument(auth.currentUser.uid, "users");
+      if (userData && userData.location) {
+        // read the location info from userData
+        setLocation(userData.location);
+      }
+    }
+    getUserData();
+  }, []);
+
+  useEffect(() => {
+    if (route.params) {
+      setLocation(route.params.selectedLocation);
+    }
+    //setLocation
+  }, [route]);
+
+  function saveLocationHandler() {
+    try{
+    //call updateDB from firestoreHelper and save location in a user doc with id= user's uid
+    updateDB(auth.currentUser.uid, { location }, "users");
+    console.log("location saved");
+    navigation.navigate("Home");
+  } catch (err) {
+    console.log("save location ", err);
+  }
+}
+
   async function verifyPermission() {
     try {
       //check if user has given permission
@@ -70,6 +102,11 @@ export default function LocationManager() {
           style={styles.image}
         />
       )}
+      <Button
+        disabled={!location}
+        title="Save My Location"
+        onPress={saveLocationHandler}
+      />
     </View>
   );
 }
